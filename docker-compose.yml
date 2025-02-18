@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=nvd_database
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - threatnet
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: always
+    ports:
+      - "8082:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=example
+    depends_on:
+      - postgres
+    networks:
+      - threatnet
+
+volumes:
+  postgres-data:
+  es-data:
+
+networks:
+  threatnet:
